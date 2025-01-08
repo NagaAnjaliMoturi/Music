@@ -21,8 +21,9 @@ urlpatterns = [
     path('profile/notifications/', views.notifications_view, name='notifications'), 
     path('profilehome/', views.profilehome, name='profile'),
     path('search/', views.search, name='search'),  # New search page
-    path('upload/', views.upload_song, name='upload_song'),  # Upload page
-    path('result/', views.show_result, name='show_result'),  # Result page
+    path('genre/<str:genre>/', views.genre_songs, name='genre_songs'),
+    path('genre/', views.genre_list, name='genre_list'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
