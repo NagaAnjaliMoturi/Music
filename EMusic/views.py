@@ -277,7 +277,7 @@ def search(request):
     })
 
 
-
+'''
 # recognition/views.py
 from django.shortcuts import render, redirect
 from .forms import SongUploadForm
@@ -304,6 +304,7 @@ def upload_song(request):
 
     return render(request, 'upload_song.html', {'form': form})
 
+
 @login_required
 def show_result(request):
     """
@@ -316,3 +317,89 @@ def show_result(request):
         return redirect('recognition:upload_song')
 
     return render(request, 'show_result.html', {'song_data': song_data})
+
+
+'''
+# genres
+
+from django.shortcuts import render
+from django.http import HttpResponse
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from django.conf import settings
+
+# Initialize Spotipy with Client Credentials Flow
+client_credentials_manager = SpotifyClientCredentials(
+    client_id=settings.SPOTIFY_CLIENT_ID,
+    client_secret=settings.SPOTIFY_CLIENT_SECRET
+)
+sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+
+# genres/views.py
+
+from django.shortcuts import render
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
+# Initialize Spotify client
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id='your_client_id', client_secret='your_client_secret'))
+
+# List of desired genres
+desired_genres = [
+    "Pop", "Indie", "Love", "Mood", "Party", "Devotional",
+    "Hip-Hop", "Dance/Electronic", "Student", "Chill", "Gaming", "K-pop", "Workout",
+    "Rock", "Sleep", "Indian Classical", "Instrumental",
+    "Metal", "Jazz", "Classical", "Folk & Acoustic", "Focus", "Soul", "Anime"
+]
+
+def genre_list(request):
+    try:
+        # Fetch available categories (genres) from Spotify Browse API
+        categories = sp.categories(limit=50)
+        genre_list = categories['categories']['items']
+        
+        # Filter genres to match only the desired ones
+        filtered_genres = [genre for genre in genre_list if genre['name'] in desired_genres]
+
+        context = {
+            'genres': filtered_genres
+        }
+
+        return render(request, 'genre_list.html', context)
+    except Exception as e:
+        return HttpResponse(f"Error fetching genres: {e}")
+
+
+def genre_songs(request, genre):
+    try:
+        # First, we fetch the genre name (from the category list) based on genre ID
+        # Fetch available categories (genres) from Spotify Browse API
+        categories = sp.categories(limit=50)
+        genre_list = categories['categories']['items']
+        
+        # Find the name of the genre by matching the ID
+        genre_name = None
+        for item in genre_list:
+            if item['id'] == genre:
+                genre_name = item['name']
+                break
+
+        if genre_name:
+            # Now, search for tracks that belong to the genre by name (not ID)
+            results = sp.search(q=f'genre:"{genre_name}"', type='track', limit=30)
+            tracks = results['tracks']['items']  # Extract tracks from the search results
+
+            if not tracks:
+                return HttpResponse(f"No tracks found for genre: {genre_name}")
+            
+            context = {
+                'genre': genre_name,
+                'tracks': tracks
+            }
+
+            return render(request, 'genre_songs.html', context)
+        else:
+            return HttpResponse(f"Genre ID '{genre}' not found.")
+
+    except Exception as e:
+        return HttpResponse(f"Error fetching tracks for genre {genre}: {e}")
