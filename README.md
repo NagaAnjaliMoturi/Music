@@ -48,9 +48,6 @@
 ![image](https://github.com/user-attachments/assets/ccbd243d-b921-41be-bb58-1f1151f571a9)
 
 
-## ***Track Detect***
-![image](https://github.com/user-attachments/assets/0cbdd100-8728-4f66-8134-fd9c1bbaf4b3)
-![image](https://github.com/user-attachments/assets/9eca0e05-7bac-44be-a737-b48071145786)
 
 
 
