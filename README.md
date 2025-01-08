@@ -43,9 +43,15 @@
 ***The User can search via text or voice***
 ![image](https://github.com/user-attachments/assets/f24bce0f-c24c-4471-871b-bc4cfd6c632b)
 
-## ***Songs**
+## **Songs**
 ![image](https://github.com/user-attachments/assets/510ff820-6f11-468d-bd23-5b1574a0e61b)
 ![image](https://github.com/user-attachments/assets/ccbd243d-b921-41be-bb58-1f1151f571a9)
+
+## **Genre**
+![image](https://github.com/user-attachments/assets/67626bcd-444b-4ebf-ab40-521f67058947)
+![image](https://github.com/user-attachments/assets/a78e53f6-1229-47e9-bdc5-af978945d513)
+
+
 
 
 
